@@ -268,6 +268,10 @@ func (p *Parser) parseInfixExpression(left ast.Expression) ast.Expression {
 	return expression
 }
 
+func (p *Parser) parseBoolean() ast.Expression {
+	return &ast.Boolean{Token: p.curToken, Value: p.curTokenIs(token.TRUE)}
+}
+
 func (p *Parser) registerPrefix(tokenType token.TokenType, fn prefixParseFn)  {
 	p.prefixParseFns[tokenType] = fn
 }
