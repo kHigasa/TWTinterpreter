@@ -195,6 +195,10 @@ if (10 > 1) {
 			"unknown operator: STRING - STRING",
 		},
 		{
+			`999[1]`,
+			"index operator not supported: INTEGER",
+		},
+		{
 			`{"name": "Monkey"}[fn(x) { x }];`,
 			"unusable as hash key: FUNCTION",
 		},
@@ -350,6 +354,7 @@ func TestBuiltinFunctions(t *testing.T) {
 		{`rest([])`, nil},
 		{`push([], 1)`, []int{1}},
 		{`push(1, 1)`, "argument to `push` must be ARRAY, got INTEGER"},
+		{`puts("hello", "world!")`, nil},
 	}
 
 	for _, tt := range tests {
@@ -383,6 +388,8 @@ func TestBuiltinFunctions(t *testing.T) {
 			for i, expectedElem := range expected {
 				testIntegerObject(t, array.Elements[i], int64(expectedElem))
 			}
+		case nil:
+			testNullObject(t, evaluated)
 		}
 	}
 }
